@@ -1,4 +1,4 @@
-# AviUtl-Alias-FPS-Counter
+# AviUtl エイリアス - FPS カウンタ
 AviUtl の FPS カウンタになる拡張編集のテキストオブジェクトのエイリアスです．パフォーマンスモニタなどにお使いください．動画出力時には自動的に非表示になります．
 
 ##	使い方
@@ -19,7 +19,7 @@ s=f:format(s)end Q[N]=1+Q[N]mes(s)end;_G[k]=F;end F(T)end?>
 ```
 
 1.	冒頭の `"FPS: %2d"` を変更することで書式を指定できます．
-	-	書式指定については Lua の [`string.format`](https://www.lua.org/manual/5.1/manual.html#pdf-string.format) 関数や C言語の [`printf`](https://learn.microsoft.com/ja-jp/cpp/c-runtime-library/format-specification-syntax-printf-and-wprintf-functions?view=msvc-170) 関数を参照．
+	-	書式指定については Lua の [`string.format()`](https://www.lua.org/manual/5.1/manual.html#pdf-string.format) 関数や C言語の [`printf()`](https://learn.microsoft.com/ja-jp/cpp/c-runtime-library/format-specification-syntax-printf-and-wprintf-functions?view=msvc-170) 関数を参照．
 
 1.	次の `4` は1秒間に何回 FPS 表示を更新するかの回数を指定しています．
 1.	3つ目の `"**frame counter"` は描画回数などをグローバル変数テーブル `_G` に保存しておくためのキーです．
@@ -35,7 +35,7 @@ if not obj.getinfo("saving") then -- 動画出力中はスキップ．
 	local Tick = math.floor(N*os.clock()); -- 現在時刻 x N を記録．
 
 	-- 更新関数がなかったり，オブジェクトの冒頭ならリセット．
-	if obj.time<=0 or not Func then
+	if obj.time <= 0 or not Func then
 
 		local tick = -N-1; -- 最終更新時刻 x N．
 		local Queue = {}; -- 描画回数履歴．

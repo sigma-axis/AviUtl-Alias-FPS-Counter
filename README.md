@@ -6,7 +6,7 @@ AviUtl の FPS カウンタになる拡張編集のテキストオブジェク�
 
 また, AviUtl の1階層下のフォルダに配置するとタイムラインの右クリックメニューに登録されるようになるのでそこから配置してもいいでしょう．
 
-![表示例](https://github.com/sigma-axis/AviUtl-Alias-FPS-Counter/assets/132639613/0efd0b30-6580-4e12-8cb3-21ff4dea8565)
+![表示例](https://github.com/sigma-axis/AviUtl-Alias-FPS-Counter/assets/132639613/14a31e06-1135-4abc-b9b9-eebfd7d02453)
 
 ##	機能
 次のテキストがセットされています：

@@ -14,10 +14,10 @@ AviUtl の FPS カウンタになる拡張編集のテキストオブジェク�
 ```lua
 <?local f,N,k="FPS: %2d",4,"**frame counter";
 if not obj.getinfo"saving" then
-local F,T,t,s,Q=_G[k],math.floor(N*os.clock())if obj.time<=0 or not F then
-t=-N-1;Q={}F=function(T)if T>t then t,T=T,math.min(T-t,N+1)s=0
+local F,t,s,Q=_G[k]if obj.time<=0 or not F then Q={}t=-N
+F=function(T)if T>t then t,T=T,math.min(T-t,N+1)s=0
 for i=T,N do s=s+Q[i]Q[i-T]=Q[i]end for i=1,T do Q[N-T+i]=0 end
-s=f:format(s)end Q[N]=1+Q[N]mes(s)end;_G[k]=F;end F(T)end?>
+s=f:format(s)end Q[N]=1+Q[N]mes(s)end;_G[k]=F;end F(math.ceil(N*os.clock()))end?>
 ```
 
 1.	冒頭の `"FPS: %2d"` を変更することで書式を指定できます．
@@ -35,13 +35,11 @@ Lua では変数名として使用できない文字が入っているため他�
 local f, N, k = "FPS: %2d", 4, "**frame counter"; -- 冒頭はむしろ見やすさ重視．
 if not obj.getinfo("saving") then -- 動画出力中はスキップ．
 	local Func = _G[k]; -- グローバル変数テーブルから更新関数を取得．
-	local Tick = math.floor(N*os.clock()); -- 現在時刻 x N を記録．
 
 	-- 更新関数がなかったり，オブジェクトの冒頭ならリセット．
 	if obj.time <= 0 or not Func then
-
-		local tick = -N-1; -- 最終更新時刻 x N．
 		local Queue = {}; -- 描画回数履歴．
+		local tick = -N; -- 最終更新時刻 x N．
 		local s; -- 出力文字列を格納．描画回数の部分和も兼任. (`string`/`sum`)
 
 		-- 更新関数を作成. T は現在時刻 x N.
@@ -75,8 +73,8 @@ if not obj.getinfo("saving") then -- 動画出力中はスキップ．
 		_G[k] = Func;
 	end
 
-	-- 更新関数を実行．
-	Func(Tick);
+	-- 現在時刻 x N を取得して更新関数を実行．
+	Func(math.ceil(N*os.clock()));
 end
 ```
 

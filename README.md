@@ -58,7 +58,7 @@ if not obj.getinfo("saving") then -- 動画出力中はスキップ．
 				-- ずらしてできた「空白」を 0 で埋める．
 				for i = 1, T do Queue[N-T+i] = 0 end
 
-				-- s を書式指定 f で文字列化．
+				-- 書式指定 f で s を文字列化．
 				s = f:format(s);
 			end
 

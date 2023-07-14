@@ -14,7 +14,7 @@ AviUtl の FPS カウンタになる拡張編集のテキストオブジェク�
 ```lua
 <?local f,N,k="FPS: %2d",4,"**frame counter";
 if not obj.getinfo"saving"then
-local F,t,s,Q=_G[k]if obj.time<=0 or not F then Q={}t=-N
+local F,t,s,Q=_G[k]if obj.time<=0 or F==t then Q={}t=-N
 F=function(T)if T>t then t,T=T,math.min(T-t,N+1)s=0
 for i=T,N do s=s+Q[i]Q[i-T]=Q[i]end for i=1,T do Q[N-T+i]=0 end
 s=f:format(s)end Q[N]=1+Q[N]mes(s)end;_G[k]=F;end F(math.ceil(N*os.clock()))end?>
@@ -40,7 +40,7 @@ if not obj.getinfo("saving") then -- 動画出力中はスキップ．
     local Func = _G[k]; -- グローバル変数テーブルから更新関数を取得．
 
     -- 更新関数がなかったり，オブジェクトの冒頭ならリセット．
-    if obj.time <= 0 or not Func then
+    if obj.time <= 0 or Func == nil then -- 実際は未初期化変数の nil 値と比較．
         local Queue = {}; -- 描画回数履歴．
         local tick = -N; -- 最終更新時刻 x N．
         local s; -- 出力文字列を格納．描画回数の部分和も兼任. (`string`/`sum`)

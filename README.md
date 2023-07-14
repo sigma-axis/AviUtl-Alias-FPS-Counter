@@ -37,47 +37,47 @@ Lua では変数名として使用できない文字が入っているため他�
 ```lua
 local f, N, k = "FPS: %2d", 4, "**frame counter"; -- 冒頭はむしろ見やすさ重視．
 if not obj.getinfo("saving") then -- 動画出力中はスキップ．
-	local Func = _G[k]; -- グローバル変数テーブルから更新関数を取得．
+    local Func = _G[k]; -- グローバル変数テーブルから更新関数を取得．
 
-	-- 更新関数がなかったり，オブジェクトの冒頭ならリセット．
-	if obj.time <= 0 or not Func then
-		local Queue = {}; -- 描画回数履歴．
-		local tick = -N; -- 最終更新時刻 x N．
-		local s; -- 出力文字列を格納．描画回数の部分和も兼任. (`string`/`sum`)
+    -- 更新関数がなかったり，オブジェクトの冒頭ならリセット．
+    if obj.time <= 0 or not Func then
+        local Queue = {}; -- 描画回数履歴．
+        local tick = -N; -- 最終更新時刻 x N．
+        local s; -- 出力文字列を格納．描画回数の部分和も兼任. (`string`/`sum`)
 
-		-- 更新関数を作成. T は現在時刻 x N.
-		Func = function(T)
-			if T > tick then -- FPS 表示の更新が必要．
-				-- 時刻を更新, T は最後の描画からの時間差に再設定．
-				tick,T = T,math.min(T-tick,N+1);
+        -- 更新関数を作成. T は現在時刻 x N.
+        Func = function(T)
+            if T > tick then -- FPS 表示の更新が必要．
+                -- 時刻を更新, T は最後の描画からの時間差に再設定．
+                tick,T = T,math.min(T-tick,N+1);
 
-				-- 履歴をずらしながら描画回数の和をとっていく．
-				s = 0; 
-				for i = T, N do
-					s = s + Queue[i];
-					Queue[i-T] = Queue[i];
-				end
+                -- 履歴をずらしながら描画回数の和をとっていく．
+                s = 0; 
+                for i = T, N do
+                    s = s + Queue[i];
+                    Queue[i-T] = Queue[i];
+                end
 
-				-- ずらしてできた「空白」を 0 で埋める．
-				for i = 1, T do Queue[N-T+i] = 0 end
+                -- ずらしてできた「空白」を 0 で埋める．
+                for i = 1, T do Queue[N-T+i] = 0 end
 
-				-- 書式指定 f で s を文字列化．
-				s = f:format(s);
-			end
+                -- 書式指定 f で s を文字列化．
+                s = f:format(s);
+            end
 
-			-- カウンタをインクリメント．
-			Queue[N] = Queue[N] + 1;
+            -- カウンタをインクリメント．
+            Queue[N] = Queue[N] + 1;
 
-			-- 文字列 s を出力．
-			mes(s);
-		end
+            -- 文字列 s を出力．
+            mes(s);
+        end
 
-		-- 作成した関数をグローバル変数テーブルに登録．
-		_G[k] = Func;
-	end
+        -- 作成した関数をグローバル変数テーブルに登録．
+        _G[k] = Func;
+    end
 
-	-- 現在時刻 x N を取得して更新関数を実行．
-	Func(math.ceil(N*os.clock()));
+    -- 現在時刻 x N を取得して更新関数を実行．
+    Func(math.ceil(N*os.clock()));
 end
 ```
 

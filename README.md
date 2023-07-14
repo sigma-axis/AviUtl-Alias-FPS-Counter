@@ -13,7 +13,7 @@ AviUtl の FPS カウンタになる拡張編集のテキストオブジェク�
 
 ```lua
 <?local f,N,k="FPS: %2d",4,"**frame counter";
-if not obj.getinfo"saving" then
+if not obj.getinfo"saving"then
 local F,t,s,Q=_G[k]if obj.time<=0 or not F then Q={}t=-N
 F=function(T)if T>t then t,T=T,math.min(T-t,N+1)s=0
 for i=T,N do s=s+Q[i]Q[i-T]=Q[i]end for i=1,T do Q[N-T+i]=0 end

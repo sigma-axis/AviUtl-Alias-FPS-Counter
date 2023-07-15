@@ -15,8 +15,8 @@ AviUtl の FPS カウンタになる拡張編集のテキストオブジェク�
 <?local f,N,k="FPS: %2d",4,"**frame counter";
 if not obj.getinfo"saving"then
 local F,t,s,Q=_G[k]if obj.time<=0 or F==t then Q={}t=-N
-F=function(T)if T>t then t,T=T,math.min(T-t,N+1)s=0
-for i=T,N do s=s+Q[i]Q[i-T]=Q[i]end for i=1,T do Q[N-T+i]=0 end
+F=function(T)if T>t then t,T=T,T-t;s=0
+for i=T,N do s=s+Q[i]Q[i-T]=Q[i]end for i=1,math.min(T,N)do Q[N+1-i]=0 end
 s=f:format(s)end Q[N]=1+Q[N]mes(s)end;_G[k]=F;end F(math.ceil(N*os.clock()))end?>
 ```
 
@@ -49,7 +49,7 @@ if not obj.getinfo("saving") then -- 動画出力中はスキップ．
         Func = function(T)
             if T > tick then -- FPS 表示の更新が必要．
                 -- 時刻を更新, T は最後の描画からの時間差に再設定．
-                tick,T = T,math.min(T-tick,N+1);
+                tick,T = T,T-tick;
 
                 -- 履歴をずらしながら描画回数の和をとっていく．
                 s = 0; 
@@ -59,7 +59,7 @@ if not obj.getinfo("saving") then -- 動画出力中はスキップ．
                 end
 
                 -- ずらしてできた「空白」を 0 で埋める．
-                for i = 1, T do Queue[N-T+i] = 0 end
+                for i=1,math.min(T,N) do Queue[N+1-i] = 0 end
 
                 -- 書式指定 f で s を文字列化．
                 s = f:format(s);
@@ -82,7 +82,9 @@ end
 ```
 
 ### その他
-もしもっと文字数を省けるなら省いてみてください．私に見せたら悔しがると思います．
+~~もしもっと文字数を省けるなら省いてみてください．私に見せたら悔しがると思います．~~
+
+...とかなんとかカッコつけて書いてたけど計4回の自己更新．何やってるのだろうか，私は...?
 
 ##	動作環境
 -	AviUtl (1.10 で確認)
